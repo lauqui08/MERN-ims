@@ -59,4 +59,24 @@ const updateProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProdusts, addProducts, viewProduct, updateProduct };
+//delete product
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findOneAndDelete({ _id: id });
+    if (!product) {
+      return res.json({ error: "Unable to process request." });
+    }
+    return res.json(product);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  getAllProdusts,
+  addProducts,
+  viewProduct,
+  updateProduct,
+  deleteProduct,
+};
