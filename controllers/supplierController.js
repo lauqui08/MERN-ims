@@ -21,7 +21,8 @@ const addSupplier = async (req, res) => {
     });
     res.json(supplier);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
+    res.status(400).json({ error: "All field is required." });
   }
 };
 

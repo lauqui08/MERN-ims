@@ -6,6 +6,7 @@ const {
   viewProduct,
   updateProduct,
   deleteProduct,
+  checkOutUpdate
 } = require("../controllers/productController");
 //get all products
 router.get("/", getAllProdusts);
@@ -15,6 +16,8 @@ router.post("/", addProducts);
 router.get("/:id", viewProduct);
 //update product
 router.patch("/:id", updateProduct);
+//update checkout
+router.patch("/:productName/updateProductQuantity",checkOutUpdate);
 //delete product
 router.delete("/:id", deleteProduct);
 module.exports = router;

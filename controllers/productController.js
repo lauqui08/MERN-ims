@@ -17,12 +17,10 @@ const addProducts = async (req, res) => {
       productPrice,
       productQuantity,
     });
-    if (!product) {
-      return res.json({ error: "Failed to add product." });
-    }
     return res.json(product);
   } catch (error) {
     console.log(error);
+    return res.status(400).json({ error: "All field is required" });
   }
 };
 
@@ -59,6 +57,14 @@ const updateProduct = async (req, res) => {
   }
 };
 
+//checkout product to update quantity on stock
+const checkOutUpdate = async(req, res) => {
+	const {productName} = req.params;
+	const {quantitySold} = req.body;
+		const quantityStock = await Product.findOne({productName});
+		const updatedStock = await Product.findOneAndUpdate({productName},{productQuantity:(Number(quantityStock.productQuantity) - 		Number(quantitySold))});
+	}
+
 //delete product
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
@@ -79,4 +85,5 @@ module.exports = {
   viewProduct,
   updateProduct,
   deleteProduct,
+  checkOutUpdate
 };

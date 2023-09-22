@@ -3,8 +3,9 @@ const PurchaseSchema = new mongoose.Schema(
   {
     supplier: { type: Object, required: [true, "Please select supplier."] },
     product: { type: Object, required: [true, "Please select product."] },
-    quantity: { type: Number, require: [true, "Quantity is required."] },
+    quantity: { type: Number, required: [true, "Quantity is required."] },
     purchaseStatus: { type: String, default: "pending" },
+    purchaseRemarks: { type: String, default: "" },
     quantityReceived: { type: Number },
     remarks: { type: String },
   },

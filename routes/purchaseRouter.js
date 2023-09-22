@@ -5,6 +5,7 @@ const {
   addPurchase,
   viewPurchase,
   updatePurchase,
+  deletePurchase
 } = require("../controllers/purchaseController");
 //get all purchases
 router.get("/", getAllPurchases);
@@ -14,4 +15,6 @@ router.post("/", addPurchase);
 router.get("/:id", viewPurchase);
 //update purchase
 router.patch("/:id", updatePurchase);
+//delete purchase
+router.delete('/:id',deletePurchase);
 module.exports = router;

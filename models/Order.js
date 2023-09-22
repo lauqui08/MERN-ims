@@ -4,11 +4,12 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     required: [true, "Customer Name is required."],
   },
-  product: { type: Object, require: [true, "Product is required."] },
-  quantity: { type: Number, require: [true, "Quantity is required."] },
+  product: { type: Object, required: [true, "Product is required."] },
+  quantity: { type: Number, required: [true, "Quantity is required."] },
   price: { type: Number },
   orderNumber: { type: String },
-});
+  orderStatus:{type:String,default:'pending'}
+},{timestamps:true});
 
 const Order = mongoose.model("Order", OrderSchema);
 
