@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
     });
     res.json({ message: "Successfully registered user." });
   } catch (error) {
-    res.status(200).json({ error: "Failed to register." });
+    res.status(400).json({ error: "All field is required." });
   }
 };
 
