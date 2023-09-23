@@ -107,9 +107,21 @@ const deleteOrder = async (req, res) => {
     }
     return res.json(order);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 };
+
+//search orders
+const searchOrders = async (req, res) => {
+const {searchBy,query} = req.params;
+const myQuery = {};
+
+	try{
+	//const orders = await Order.find({...myQuery,[searchBy]:query});
+	const orders = await Order.find({...myQuery,[searchBy]:{ $regex: '.*' + query + '.*',$options:'i' } });
+	return res.json(orders);
+	}catch(error){console.log(error.message)}
+}
 
 module.exports = {
   getAllOrders,
@@ -117,4 +129,5 @@ module.exports = {
   viewOrder,
   updateOrder,
   deleteOrder,
+  searchOrders
 };

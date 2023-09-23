@@ -70,10 +70,23 @@ const deleteSupplier = async (req, res) => {
     console.log(error);
   }
 };
+
+//search supplier
+const searchSupplier = async (req, res) => {
+const {searchBy,query} = req.params;
+const myQuery = {};
+
+	try{
+	//const orders = await Order.find({...myQuery,[searchBy]:query});
+	const suppliers = await Supplier.find({...myQuery,[searchBy]:{ $regex: '.*' + query + '.*',$options:'i' } });
+	return res.json(suppliers);
+	}catch(error){console.log(error.message)}
+}
 module.exports = {
   getAllSuppliers,
   addSupplier,
   viewSupplier,
   updateSupplier,
   deleteSupplier,
+  searchSupplier
 };

@@ -62,8 +62,23 @@ const checkOutUpdate = async(req, res) => {
 	const {productName} = req.params;
 	const {quantitySold} = req.body;
 		const quantityStock = await Product.findOne({productName});
-		const updatedStock = await Product.findOneAndUpdate({productName},{productQuantity:(Number(quantityStock.productQuantity) - 		Number(quantitySold))});
+		const newQuantity = (Number(quantityStock.productQuantity) - Number(quantitySold));
+		const updatedStock = await Product.findOneAndUpdate({productName},{productQuantity:(Number(quantityStock.productQuantity) - 		Number(quantitySold)),productStatus:newQuantity ? 'available' : 'no stock'});
+		
+		console.log('sheeesh=',newQuantity);
 	}
+	
+//search products
+const searchProducts = async (req, res) => {
+const {searchBy,query} = req.params;
+const myQuery = {};
+
+	try{
+	//const orders = await Order.find({...myQuery,[searchBy]:query});
+	const products = await Product.find({...myQuery,[searchBy]:{ $regex: '.*' + query + '.*',$options:'i' } });
+	return res.json(products);
+	}catch(error){console.log(error.message)}
+}
 
 //delete product
 const deleteProduct = async (req, res) => {
@@ -85,5 +100,6 @@ module.exports = {
   viewProduct,
   updateProduct,
   deleteProduct,
-  checkOutUpdate
+  checkOutUpdate,
+  searchProducts
 };

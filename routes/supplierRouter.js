@@ -6,6 +6,7 @@ const {
   viewSupplier,
   updateSupplier,
   deleteSupplier,
+  searchSupplier
 } = require("../controllers/supplierController");
 //get all suppliers
 router.get("/", getAllSuppliers);
@@ -17,4 +18,6 @@ router.get("/:id", viewSupplier);
 router.patch("/:id", updateSupplier);
 //delete supplier
 router.delete("/:id", deleteSupplier);
+//search supplier
+router.get('/:searchBy/:query/search',searchSupplier);
 module.exports = router;

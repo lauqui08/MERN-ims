@@ -91,4 +91,16 @@ const deletePurchase = async (req, res) => {
   }
 };
 
-module.exports = { getAllPurchases, addPurchase, viewPurchase, updatePurchase, deletePurchase };
+//search purchases
+const searchPurchases = async (req, res) => {
+const {searchBy,query} = req.params;
+const myQuery = {};
+
+	try{
+	//const orders = await Order.find({...myQuery,[searchBy]:query});
+	const purchases = await Purchase.find({...myQuery,[searchBy]:{ $regex: '.*' + query + '.*',$options:'i' } });
+	return res.json(purchases);
+	}catch(error){console.log(error.message)}
+}
+
+module.exports = { getAllPurchases, addPurchase, viewPurchase, updatePurchase, deletePurchase,searchPurchases };

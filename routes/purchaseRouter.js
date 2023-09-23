@@ -5,7 +5,8 @@ const {
   addPurchase,
   viewPurchase,
   updatePurchase,
-  deletePurchase
+  deletePurchase,
+  searchPurchases
 } = require("../controllers/purchaseController");
 //get all purchases
 router.get("/", getAllPurchases);
@@ -17,4 +18,6 @@ router.get("/:id", viewPurchase);
 router.patch("/:id", updatePurchase);
 //delete purchase
 router.delete('/:id',deletePurchase);
+//search purchases
+router.get('/:searchBy/:query/search',searchPurchases);
 module.exports = router;
