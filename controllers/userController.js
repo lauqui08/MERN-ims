@@ -17,7 +17,10 @@ const registerUser = async (req, res) => {
     });
     res.json({ message: "Successfully registered user." });
   } catch (error) {
-    res.status(400).json({ error: "All field is required." });
+    if (error.code === 11000) {
+      return res.status(400).json({ error: "Email is already taken." });
+    }
+    return res.status(400).json({ error: "All field is required." });
   }
 };
 
@@ -77,4 +80,40 @@ const checkAdmin = async (req, res) => {
     console.log(error.message);
   }
 };
-module.exports = { registerUser, loginUser, checkUserInfo, checkAdmin };
+
+const changePassword = async (req, res) => {
+  const { email, password, newPassword, confirmPassword } = req.body;
+
+  if (newPassword != confirmPassword) {
+    return res.status(400).json({ error: "Password not match." });
+  }
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "Unable to change password. Please try again." });
+    }
+    await bcrypt.compare(password, user.password, async (error, result) => {
+      if (!result) {
+        return res
+          .status(400)
+          .json({ error: "Unable to change password. Please try again." });
+      }
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+      await User.findOneAndUpdate({ email }, { password: hashedNewPassword });
+      return res.json({ message: "Successfully updated password." });
+    });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ error: "Unable to change password. Please try again." });
+  }
+};
+module.exports = {
+  registerUser,
+  loginUser,
+  checkUserInfo,
+  checkAdmin,
+  changePassword,
+};

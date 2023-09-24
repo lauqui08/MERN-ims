@@ -5,6 +5,7 @@ const {
   loginUser,
   checkUserInfo,
   checkAdmin,
+  changePassword,
 } = require("../controllers/userController");
 
 //register
@@ -15,4 +16,6 @@ router.post("/login", loginUser);
 router.get("/:email/info", checkUserInfo);
 //get user info via email
 router.get("/checkAdmin", checkAdmin);
+//change password
+router.post("/change-password", changePassword);
 module.exports = router;
