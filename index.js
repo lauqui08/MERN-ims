@@ -13,7 +13,6 @@ const app = express();
 //valriables
 const PORT = process.env.PORT || 8000;
 const URI = process.env.MONGO_URI;
-const DATABASE = process.env.DATABASE;
 
 //middlewares
 app.use(cors());
@@ -28,7 +27,7 @@ app.use("/api/v1/users", userRouter);
 
 //start server
 const start = async () => {
-  await dbcon(URI, DATABASE);
+  await dbcon(URI);
   app.listen(PORT, (error) => {
     if (error) {
       console.log("Unable to run server.");
