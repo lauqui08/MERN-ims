@@ -8,6 +8,7 @@ const {
   changePassword,
   viewAllUsers,
   searchUsers,
+  updateStatus,
 } = require("../controllers/userController");
 
 //register
@@ -24,4 +25,5 @@ router.post("/change-password", changePassword);
 router.get("/", viewAllUsers);
 //search users
 router.get("/:searchBy/:query/search", searchUsers);
+router.patch("/:id", updateStatus);
 module.exports = router;

@@ -50,12 +50,12 @@ const updateSupplier = async (req, res) => {
       { _id: id },
       { supplierName, supplierAddress, supplierEmail, supplierContact }
     );
-    if (!supplier) {
-      return res.json({ error: "Unable to process request." });
-    }
-    return res.json(supplier);
+    return res.json({ message: "Successfully updated supplier." });
   } catch (error) {
     console.log(error);
+    return res
+      .status(400)
+      .json({ error: "Failed to update suppliers details. Please try again." });
   }
 };
 
@@ -73,20 +73,25 @@ const deleteSupplier = async (req, res) => {
 
 //search supplier
 const searchSupplier = async (req, res) => {
-const {searchBy,query} = req.params;
-const myQuery = {};
+  const { searchBy, query } = req.params;
+  const myQuery = {};
 
-	try{
-	//const orders = await Order.find({...myQuery,[searchBy]:query});
-	const suppliers = await Supplier.find({...myQuery,[searchBy]:{ $regex: '.*' + query + '.*',$options:'i' } });
-	return res.json(suppliers);
-	}catch(error){console.log(error.message)}
-}
+  try {
+    //const orders = await Order.find({...myQuery,[searchBy]:query});
+    const suppliers = await Supplier.find({
+      ...myQuery,
+      [searchBy]: { $regex: ".*" + query + ".*", $options: "i" },
+    });
+    return res.json(suppliers);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 module.exports = {
   getAllSuppliers,
   addSupplier,
   viewSupplier,
   updateSupplier,
   deleteSupplier,
-  searchSupplier
+  searchSupplier,
 };

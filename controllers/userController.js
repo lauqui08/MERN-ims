@@ -142,6 +142,26 @@ const searchUsers = async (req, res) => {
     console.log(error.message);
   }
 };
+
+const updateStatus = async (req, res) => {
+  const { id } = req.params;
+  const { accountStatus } = req.body;
+  try {
+    if (accountStatus == "active") {
+      const user = await User.findOneAndUpdate({ _id: id }, { accountStatus });
+      return res.json({ message: "Successfull Activated" });
+    }
+    if (accountStatus == "deactivated") {
+      const user = await User.findOneAndUpdate({ _id: id }, { accountStatus });
+      return res.json({ message: "Successfull Deactivated" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res
+      .status(400)
+      .json({ error: "Unable to process request. Please try again." });
+  }
+};
 module.exports = {
   registerUser,
   loginUser,
@@ -150,4 +170,5 @@ module.exports = {
   changePassword,
   viewAllUsers,
   searchUsers,
+  updateStatus,
 };
