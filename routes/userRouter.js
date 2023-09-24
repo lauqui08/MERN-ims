@@ -6,6 +6,8 @@ const {
   checkUserInfo,
   checkAdmin,
   changePassword,
+  viewAllUsers,
+  searchUsers,
 } = require("../controllers/userController");
 
 //register
@@ -18,4 +20,8 @@ router.get("/:email/info", checkUserInfo);
 router.get("/checkAdmin", checkAdmin);
 //change password
 router.post("/change-password", changePassword);
+//view all users
+router.get("/", viewAllUsers);
+//search users
+router.get("/:searchBy/:query/search", searchUsers);
 module.exports = router;

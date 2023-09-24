@@ -2,7 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const SECRET = process.env.SECRET;
-
+//register
 const registerUser = async (req, res) => {
   const { fullname, email, password, userType } = req.body;
   try {
@@ -23,7 +23,7 @@ const registerUser = async (req, res) => {
     return res.status(400).json({ error: "All field is required." });
   }
 };
-
+//login
 const loginUser = async (req, res) => {
   const { email, password, userType } = req.body;
 
@@ -33,6 +33,12 @@ const loginUser = async (req, res) => {
       return res
         .status(400)
         .json({ error: "Failed to login. Please check your credentials." });
+    }
+
+    if (validateEmail.accountStatus != "active") {
+      return res.status(400).json({
+        error: "Failed to log in. Please contact your administrator.",
+      });
     }
     const hashPassword = validateEmail.password;
 
@@ -110,10 +116,38 @@ const changePassword = async (req, res) => {
       .json({ error: "Unable to change password. Please try again." });
   }
 };
+
+const viewAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    return res.json(users);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//search users
+const searchUsers = async (req, res) => {
+  const { searchBy, query } = req.params;
+  const myQuery = {};
+
+  try {
+    //const orders = await Order.find({...myQuery,[searchBy]:query});
+    const users = await User.find({
+      ...myQuery,
+      [searchBy]: { $regex: ".*" + query + ".*", $options: "i" },
+    });
+    return res.json(users);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 module.exports = {
   registerUser,
   loginUser,
   checkUserInfo,
   checkAdmin,
   changePassword,
+  viewAllUsers,
+  searchUsers,
 };
